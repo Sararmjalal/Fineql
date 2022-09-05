@@ -6,23 +6,15 @@ import { DOMAIN } from "../config/constants"
 
 const DashboardMenu = (props) => {
 
-  const { setMobileMenu, mobileMenu, thisUser, refetch } = props
-
+  const { setMobileMenu, mobileMenu, thisUser, edited } = props
   const [img, setImg] = useState("")
   const [showModal, setShowModal] = useState(false)
   const location = useLocation()
 
   useEffect(() => {
-
     if (thisUser.img)
-    {
-      console.log("geeeeee")
       setImg(thisUser.img)
-
-      refetch()
-    }
-
-  }, [thisUser])
+  }, [edited])
 
   return (
     <>
@@ -31,7 +23,7 @@ const DashboardMenu = (props) => {
         <Link to="/dashboard">
           <div className="w-16  p-3">
               <img
-                src={`${DOMAIN}/${img}`}
+                src={ edited ? `${DOMAIN}/${thisUser.img}` : `${DOMAIN}/${img}` }
                 onError={(e) => e.target.src = Avatar}
                 className="rounded-full aspect-square object-cover"></img>
           </div>

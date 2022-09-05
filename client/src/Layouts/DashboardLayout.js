@@ -45,10 +45,7 @@ const DashboardLayout = () => {
   const cookie = new Cookies()
   const navigate = useNavigate()
   const [mobileMenu, setMobileMenu] = useState(false)
-  
   const { data, loading, refetch } = useQuery(GET_USER)
-  
-  console.log(data)
 
   useEffect(() => {
     if (!cookie.get("ut"))

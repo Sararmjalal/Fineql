@@ -14,8 +14,7 @@ mutation EditMe($name: String!, $img: Upload) {
 
 const EditProfile = () => {
 
-  const { data, refetch } = useOutletContext()
-
+  const {data, refetch } = useOutletContext()
   const [thisUser, setThisUser] = useState({
     name: {
       value: data.me.name,
@@ -23,23 +22,24 @@ const EditProfile = () => {
     },
     img: data.me.img
   })
-
+  
   const [file, setFile] = useState(null)
-
   const [EditME] = useMutation(EDIT_ME)
 
-  // useEffect(() => {
-  //   if (file) {
+  useEffect(() => {
+    if (file) {
 
-  //     const fileReader = new FileReader()
+      const fileReader = new FileReader()
 
-  //     fileReader.onload = function (e) {
-  //       setThisUser({ ...thisUser, img: e.target.result })
-  //     }
+      fileReader.onload = function (e) {
+        console.log(e.target)
+        setThisUser({ ...thisUser, img: e.target.result })
+      }
 
-  //     fileReader.readAsDataURL(file)
-  //   }
-  // }, [file])
+      fileReader.readAsDataURL(file)
+    }
+
+  }, [file])
 
   const edit = async () => {
 
@@ -47,19 +47,26 @@ const EditProfile = () => {
       ...thisUser,
       name: { ...thisUser.name, msg:"Name cannot be empty!" }
     })
-      
+          
     try {
-      const x = await EditME({
+      await EditME({
         variables: {
           "name": thisUser.name.value,
           "img": file
         }
       })
 
-      refetch()
+      await refetch()
+
+      if (file) {
+      toast.success("Your profile edited successfully! Redirecting...")
+      return setTimeout(() => {
+        window.location.assign('/dashboard')
+      }, 2300)
+      }
 
       toast.success("Your profile edited successfully!")
-
+            
     } catch (error) {
       console.error(error.message)
       toast.error("Something went wrong. Please try again.")
@@ -72,7 +79,7 @@ const EditProfile = () => {
       <p className="font-light mb-6">You can edit your profile here.</p>
         <div className="w-72 mx-auto sm:mx-0">
           <label htmlFor="fileInput">
-            <div className="bg-gray-100 hover:bg-gray-200 h-48 w-full cursor-pointer mb-4 flex flex-col justify-center">
+            <div className="bg-gray-100 hover:bg-gray-200 h-72 w-full cursor-pointer mb-4 flex flex-col justify-center">
               <img className={`${thisUser.img? "" : "hidden"} w-full h-full object-cover`}
               src={`${DOMAIN}/${thisUser.img}`}
               onError={(e) => e.target.src = thisUser.img}
