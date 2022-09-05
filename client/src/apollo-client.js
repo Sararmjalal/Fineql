@@ -1,14 +1,10 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo } from 'react'
 
 import { endpoint } from './config/constants';
 
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  ApolloProvider,
-  ApolloLink
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, ApolloLink } from '@apollo/client';
+
+import { createUploadLink } from 'apollo-upload-client';
 
 import { onError } from "@apollo/client/link/error";
 
@@ -44,7 +40,7 @@ export default function CustomApolloProvider(props) {
       }
     })
 
-    const httpLink = createHttpLink({
+    const httpLink = createUploadLink({
       uri: endpoint,
     });
 

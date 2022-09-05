@@ -46,15 +46,16 @@ const DashboardLayout = () => {
   const navigate = useNavigate()
   const [mobileMenu, setMobileMenu] = useState(false)
   
-  const { data, loading } = useQuery(GET_USER)
+  const { data, loading, refetch } = useQuery(GET_USER)
   
   console.log(data)
 
   useEffect(() => {
     if (!cookie.get("ut"))
       navigate("/login")
+    if (data)
+      refetch()
   }, [])
-
   
   if (loading) return <Loading />
   
@@ -64,13 +65,14 @@ const DashboardLayout = () => {
         mobileMenu={mobileMenu}
         setMobileMenu={setMobileMenu}
         thisUser={data.me}
+        refetch={refetch}
       />
       <div
         className="sm:ml-[17.5rem] min-h-screen overflow-y-auto m-6"
         onClick={() => setMobileMenu(false)}
       >
         <Outlet
-        thisUser={data.me}
+        context={{data, refetch}}
         />
       </div>
     </div>

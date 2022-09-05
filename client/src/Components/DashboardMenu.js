@@ -1,15 +1,28 @@
 import Avatar from "../assets/jpg/UserAvatar.jpg"
 import { Link, useLocation } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ConfirmDelete from "./ConfirmDeleteModal"
+import { DOMAIN } from "../config/constants"
 
 const DashboardMenu = (props) => {
 
-  const { setMobileMenu, mobileMenu, thisUser } = props
+  const { setMobileMenu, mobileMenu, thisUser, refetch } = props
 
+  const [img, setImg] = useState("")
   const [showModal, setShowModal] = useState(false)
-
   const location = useLocation()
+
+  useEffect(() => {
+
+    if (thisUser.img)
+    {
+      console.log("geeeeee")
+      setImg(thisUser.img)
+
+      refetch()
+    }
+
+  }, [thisUser])
 
   return (
     <>
@@ -18,13 +31,16 @@ const DashboardMenu = (props) => {
         <Link to="/dashboard">
           <div className="w-16  p-3">
               <img
-                src={thisUser.img ? thisUser.img : Avatar}
+                src={`${DOMAIN}/${img}`}
                 onError={(e) => e.target.src = Avatar}
                 className="rounded-full aspect-square object-cover"></img>
           </div>
         </Link>
         <div className="sm:w-1/2 w-[calc(75%-70px)]">
-          <p className=" text-dark-text-color pt-5">Welcome {thisUser.name}!</p>
+            <p className=" text-dark-text-color pt-5">Welcome {thisUser.name.length > 5 ?
+              thisUser.name.slice(0, 5) + "..." : thisUser.name}
+              !
+            </p>
         </div>
         <div className="block sm:hidden w-1/4 text-right pt-5 pr-3">
           <button onClick={() => setMobileMenu(!mobileMenu)}>
