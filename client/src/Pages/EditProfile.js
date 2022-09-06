@@ -76,7 +76,7 @@ const EditProfile = () => {
   return (
     <div className=" text-gray-600">
       <h1 className="text-lg mb-2">Edit Profile</h1>
-      <p className="font-light mb-6">You can edit your profile here.</p>
+      <p className="font-light mb-6">You can edit your profile here.</p> 
         <div className="w-72 mx-auto sm:mx-0">
           <label htmlFor="fileInput">
             <div className="bg-gray-100 hover:bg-gray-200 h-72 w-full cursor-pointer mb-4 flex flex-col justify-center">

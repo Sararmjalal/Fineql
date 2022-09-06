@@ -75,11 +75,11 @@ const DashboardMenu = (props) => {
             </p>
           </li>
         </Link>
-        <Link to="/dashboard/orders">  
+        <Link to="/dashboard/expenses">  
           <li className=" h-16 border-b-[1px] border-gray-100 flex flex-col justify-center hover:bg-gray-100">
-          <p className={`${location.pathname === '/dashboard/orders' ? "text-blue-500 font-normal" : ""}
+          <p className={`${location.pathname === '/dashboard/expenses' ? "text-blue-500 font-normal" : ""}
             w-full text-center`}>
-              Orders
+              Expenses
             </p>
           </li>
         </Link>

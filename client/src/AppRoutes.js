@@ -8,8 +8,7 @@ import Dashboard from "./Pages/Dashboard";
 import EditProfile from "./Pages/EditProfile";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
-import Order from "./Pages/Order";
-import Orders from "./Pages/Orders";
+import Expenses from "./Pages/Expenses";
 import Register from "./Pages/Register";
 import Tags from "./Pages/Tags";
 
@@ -21,8 +20,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />}/>
           <Route path="/dashboard/" element={<DashboardLayout />}>
             <Route path="" element={<Dashboard />} />
-            <Route path="orders" element={<Orders />} />
-            <Route path="order/:id" element={<Order />} />
+            <Route path="expenses" element={<Expenses />} />
             <Route path="tags" element={<Tags />} />
             <Route path="profile/edit" element={<EditProfile />} />
           </Route>
