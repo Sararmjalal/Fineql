@@ -36,7 +36,24 @@ const TagsList = ({tags, tag, colors, index, refetch}) => {
     })
   }
 
-  const editTag = async() => {
+  const editTag = async () => {
+
+    if (!thisTag.name.value) return setThisTag({
+      ...thisTag,
+      name: {
+        ...thisTag.name,
+        msg: "This field cannot be empty!"
+      }
+    })
+
+    if (!thisTag.color.value) return setThisTag({
+      ...thisTag,
+      color: {
+        ...thisTag.color,
+        msg: "This field cannot be empty!"
+      }
+    })
+
     try {
       await EditTag({
         variables:{
@@ -100,15 +117,13 @@ const TagsList = ({tags, tag, colors, index, refetch}) => {
                 }})
               }}
             />
-              <p className="text-sm text-red-600 font-normal mt-1">{tag.name.msg}</p>
+              <p className="text-sm text-red-600 font-normal mt-1">{thisTag.name.msg}</p>
             </div>
             <div className="w-1/2 mb-4 ml-2 relative">
               <label className={`${thisTag.color.msg ? "text-red-600 font-normal" : ""}`}>Color</label>
               <div
               className={`${showMenu? "bg-blue-100" : "bg-blue-50"} 
-              ${thisTag.color.msg ? "border-[1px] border-red-600" : ""}
-              ${thisTag.color.value ? "text-gray-600" : "text-gray-400"}
-              p-[0.73rem] mt-2 cursor-pointer `}
+              p-[0.73rem] mt-2 cursor-pointer text-gray-600`}
               onClick={() => {
                 setShowMenu(!showMenu)
                 setThisTag({
@@ -138,7 +153,6 @@ const TagsList = ({tags, tag, colors, index, refetch}) => {
                 :
                 ""
               }
-              <p className="text-sm text-red-600 font-normal mt-1">{tag.color.msg}</p>
             </div> 
           </div>
           <div className="flex justify-end mb-1">

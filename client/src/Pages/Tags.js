@@ -60,7 +60,24 @@ const Tags = () => {
   const tags = data.me.myTags
   const [AddTag] = useMutation(ADD_TAG)
 
-  const addTag = async() => {
+  const addTag = async () => {
+    
+    if (!tag.name.value) return setTag({
+      ...tag,
+      name: {
+        ...tag.name,
+        msg: "This field cannot be empty!"
+      }
+    })
+
+    if (!tag.color.value) return setTag({
+      ...tag,
+      color: {
+        ...tag.color,
+        msg: "This field cannot be empty!"
+      }
+    })
+
     try {
       await AddTag({
         variables: {
