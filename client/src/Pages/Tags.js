@@ -127,7 +127,7 @@ const Tags = () => {
       {
         showAdd ?
         <div
-        className="bg-white lg:w-1/2 h-max  p-4 shadow-2xl shadow-blue-500/10 border-t-[1px] border-gray-100 text-sm"
+        className="bg-white lg:w-1/2 h-max p-4 shadow-2xl shadow-blue-500/10 border-t-[1px] border-gray-100 text-sm mb-6"
         >
           <div className="flex">
           <div className="w-1/2 mb-4 mr-2">

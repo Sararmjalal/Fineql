@@ -94,7 +94,8 @@ const DashboardMenu = (props) => {
       {
         showModal ?
           <ConfirmDelete
-          setShowModal={setShowModal}
+            setShowModal={setShowModal}
+            useFor="logout"
           />
           :
           ""

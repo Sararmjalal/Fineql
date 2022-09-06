@@ -6,3 +6,20 @@
   --dark-text-color: #dcdcdc;
   --light-text-color: #4b5563;
 }
+
+/* For hiding arrows in number input */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number]{
+    -moz-appearance: textfield;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+}
