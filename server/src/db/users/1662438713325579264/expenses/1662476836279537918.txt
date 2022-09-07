@@ -1,1 +1,0 @@
-{"amount":100,"tags":["1662445419780610925"],"geo":{"lat":35.73825,"lon":51.50962},"address":{"MunicipalityZone":15,"Neighbourhood":"none","FormattedAddress":"none","Place":"moslem"},"date":"2022-09-06","_id":"1662476836279537918"}

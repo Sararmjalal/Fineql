@@ -12,9 +12,10 @@ mutation Delete_expense($id: ID!) {
 }
 `
 
-const ConfirmDelete = ({setShowModal, useFor, _id, refetch}) => {
+const ConfirmModal = ({setShowModal, useFor, _id, refetch}) => {
 
   const cookie = new Cookies()
+  
   const navigate = useNavigate()
 
   const [RemoveExpense] = useMutation(REMOVE_EXPENSE)
@@ -35,7 +36,7 @@ const ConfirmDelete = ({setShowModal, useFor, _id, refetch}) => {
 
       toast.success("Expense removed successfully!")
 
-      refetch()
+      await refetch()
 
     } catch (error) {
       toast.error("Something went wrong. Please try again!")  
@@ -100,4 +101,4 @@ const ConfirmDelete = ({setShowModal, useFor, _id, refetch}) => {
   )
 }
 
-export default ConfirmDelete
+export default ConfirmModal

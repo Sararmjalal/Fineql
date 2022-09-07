@@ -89,7 +89,7 @@ const Tags = () => {
       })
 
       toast.success("Tag added successfully!")
-      refetch()
+      await refetch()
       setShowMenu(false)
       setShowAdd(false)
       setTag({
@@ -116,7 +116,12 @@ const Tags = () => {
           !tags[0] ?
             <p className="font-light text-sm">You have no tags yet. Start by adding new one!</p>
             :
-            <ul className="shadow-2xl shadow-blue-500/10 lg:w-1/2">
+            <>
+            <div className="flex items-center gap-2 w-full p-6 text-sm font-medium">
+              <div className="mr-2">C.</div>
+                Name
+              </div>
+             <ul className="shadow-2xl shadow-blue-500/10 lg:w-1/2"> 
               {
               tags.map((tag, index) => {
               return(
@@ -131,6 +136,7 @@ const Tags = () => {
             })
               }
             </ul>
+            </>
         }
       </div>
       <div>

@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import AddExpenseTagsList from "../Components/AddExpenseTagsList";
 import { MapContainer, TileLayer, Marker } from "react-leaflet"
 import "leaflet/dist/leaflet.css";
+import ExpensesList from "../Components/ExpensesList";
 
 const ADD_EXPENSE = gql`
 mutation Create_expense($data: ExpenseInfo!) {
@@ -97,7 +98,7 @@ const Expenses = () => {
       })
 
       toast.success("Expense added successfully!")
-      refetch()
+      await refetch()
       setShowMenu(false)
       setShowAdd(false)
       setThisExpense({
@@ -149,7 +150,23 @@ const Expenses = () => {
         !expenses[0] ?
         <p className="font-light text-sm">You have no expenses yet. Start by adding new one!</p>
         :
-        "Hello"
+          <div>
+            <div className="flex items-center gap-2 lg:w-1/2 p-6 text-sm font-medium">
+              <div className="sm:w-1/5 w-1/4">Amount</div>
+                Tag 
+              </div>
+            <ul  className="shadow-2xl shadow-blue-500/10 lg:w-1/2">
+              {
+                expenses.map((expense, index) => {
+                  return <ExpensesList
+                    expense={expense}
+                    index={index}
+                    refetch={refetch}
+                  />
+                })
+              }
+            </ul>
+        </div>
     }     
       <div className="text-sm">
           <p

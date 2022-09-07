@@ -1,7 +1,7 @@
 import Avatar from "../assets/jpg/UserAvatar.jpg"
 import { Link, useLocation } from "react-router-dom"
 import { useEffect, useState } from "react"
-import ConfirmDelete from "./ConfirmDeleteModal"
+import ConfirmModal from "./ConfirmModal"
 import { DOMAIN } from "../config/constants"
 
 const DashboardMenu = (props) => {
@@ -67,19 +67,19 @@ const DashboardMenu = (props) => {
             </p>
           </li>
         </Link>
+          <Link to="/dashboard/expenses">  
+            <li className=" h-16 border-b-[1px] border-gray-100 flex flex-col justify-center hover:bg-gray-100">
+            <p className={`${location.pathname === '/dashboard/expenses' ? "text-blue-500 font-normal" : ""}
+              w-full text-center`}>
+                Expenses
+              </p>
+            </li>
+          </Link>
         <Link to="/dashboard/tags">
           <li className=" h-16 border-b-[1px] border-gray-100 flex flex-col justify-center hover:bg-gray-100">
           <p className={`${location.pathname === '/dashboard/tags' ? "text-blue-500 font-normal" : ""}
             w-full text-center`}>
               Tags
-            </p>
-          </li>
-        </Link>
-        <Link to="/dashboard/expenses">  
-          <li className=" h-16 border-b-[1px] border-gray-100 flex flex-col justify-center hover:bg-gray-100">
-          <p className={`${location.pathname === '/dashboard/expenses' ? "text-blue-500 font-normal" : ""}
-            w-full text-center`}>
-              Expenses
             </p>
           </li>
         </Link>
@@ -93,7 +93,7 @@ const DashboardMenu = (props) => {
       </div>
       {
         showModal ?
-          <ConfirmDelete
+          <ConfirmModal
             setShowModal={setShowModal}
             useFor="logout"
           />
