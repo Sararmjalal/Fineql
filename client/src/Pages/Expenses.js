@@ -28,8 +28,10 @@ const Expenses = () => {
       msg:""
     },
     geo: {
-      lat: "35.73825",
-      lon: "51.50962"
+      value: {
+        lat: "35.73825",
+        lon: "51.50962"
+      }
     },
     tag: {
       value: "",
@@ -60,20 +62,11 @@ const Expenses = () => {
   const [AddExpense] = useMutation(ADD_EXPENSE)
 
   const addExpense = async () => {
-    const keys = Object.keys(thisExpense)
     const values = Object.values(thisExpense)
-    const checkifEmptyValues = values.every(item => !item.value)
+    const checkifEmptyValues = values.some(item => !item.value)
 
-    if(checkifEmptyValues) return values.forEach(item => {
-      if (!item.value) {
-        item.msg = "This field cannot be empty!"
-        keys.forEach(element => {
-        setThisExpense({
-          ...thisExpense,
-          element: item
-        })
-        })
-      }
+    if (checkifEmptyValues) return values.forEach(item => {
+      if (!item.value) item.msg = "This field cannot be empty!"
     })
 
     try {
@@ -82,8 +75,8 @@ const Expenses = () => {
           "data": {
             "amount": parseFloat(thisExpense.amount.value),
             "geo": {
-              "lat": parseFloat(thisExpense.geo.lat),
-              "lon": parseFloat(thisExpense.geo.lon)
+              "lat": parseFloat(thisExpense.geo.value.lat),
+              "lon": parseFloat(thisExpense.geo.value.lon)
             },
             "tags": [thisExpense.tag.value],
             "date": thisExpense.date.value,
@@ -107,8 +100,11 @@ const Expenses = () => {
           msg:""
         },
         geo: {
-          lat: "35.73825",
-          lon: "51.50962"
+          value:
+          {
+            lat: "35.73825",
+            lon: "51.50962"
+          }
         },
         tag: {
           value: "",
@@ -188,8 +184,7 @@ const Expenses = () => {
             flex gap-1 items-center bg-blue-50 mt-2 pr-2`}>         
             <input
               placeholder="Enter expense amount"
-              className={`
-              bg-blue-50 p-3 outline-none w-full`}
+              className="bg-blue-50 p-3 outline-none w-full"
               type="number"
               value={thisExpense.amount.value}
               onChange={(e) => {
@@ -355,7 +350,7 @@ const Expenses = () => {
               </div> 
               <div className="w-full h-72 mb-4">
                 <MapContainer
-                  center={ [thisExpense.geo.lat, thisExpense.geo.lon]}
+                  center={ [thisExpense.geo.value.lat, thisExpense.geo.value.lon]}
                   zoom={16}
                   scrollWheelZoom={true}
                   onChange={(e) => console.log("changes", e)}

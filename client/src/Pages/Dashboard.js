@@ -13,7 +13,14 @@ const Dashboard = () => {
           !expenses[0] ?
             <p className="font-light text-sm">You have no expenses yet.</p>
           :
-          "Hello"
+          <div>
+            <div className="mb-6 lg:w-1/2">
+             <p className="font-light text-sm">Your expenses chart base on time</p>
+            </div>
+            <div className="mb-6 lg:w-1/2">
+             <p className="font-light text-sm">Your expenses chart base on tags</p>
+            </div>
+          </div>
       }     
     </div>
   )

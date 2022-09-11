@@ -77,7 +77,7 @@ const EditProfile = () => {
     <div className=" text-gray-600">
       <h1 className="text-lg mb-2">Edit Profile</h1>
       <p className="font-light mb-6">You can edit your profile here.</p> 
-        <div className="w-72 mx-auto sm:mx-0">
+        <div className="w-72 mx-auto sm:mx-0 text-sm">
           <label htmlFor="fileInput">
             <div className="bg-gray-100 hover:bg-gray-200 h-72 w-full cursor-pointer mb-4 flex flex-col justify-center">
               <img className={`${thisUser.img? "" : "hidden"} w-full h-full object-cover`}
@@ -99,7 +99,7 @@ const EditProfile = () => {
         <input
           placeholder="Enter your name"
           className={`${thisUser.name.msg ? "border-[1px] border-red-600" : ""}
-          mt-2 bg-gray-100 focus:bg-gray-200 shadow-2xl shadow-blue-500/10 p-3 outline-none w-full`}
+          mt-2 bg-blue-50 focus:bg-blue-100  p-3 outline-none w-full`}
           type="text"
           value={thisUser.name.value}
           onChange={(e) => {
@@ -112,7 +112,7 @@ const EditProfile = () => {
         />
         <p className="text-sm text-red-600 font-normal mt-1">{thisUser.name.msg}</p>
         <div className="flex justify-end mt-4 mb-1">
-          <button className="bg-gray-800 text-white px-6 py-2 hover:bg-black font-normal"
+          <button className="bg-blue-500 text-white px-6 py-2 font-medium outline-none"
             onClick={edit}
           >
             Edit 

@@ -11,6 +11,7 @@ import Login from "./Pages/Login";
 import Expenses from "./Pages/Expenses";
 import Register from "./Pages/Register";
 import Tags from "./Pages/Tags";
+import NotFound from "./Pages/NotFound";
 
 function AppRoutes() {
   
@@ -28,7 +29,9 @@ function AppRoutes() {
           <Route path="/login/" element={<LoginSignupLayout />}>
             <Route path="" element={<Login />} />
             <Route path=":id" element={<Register />} />
-          </Route>
+        </Route>
+        
+        <Route path="*" element={<NotFound />}/>
       </Routes>
     </BrowserRouter>
   );

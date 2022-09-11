@@ -71,12 +71,12 @@ const Login = () => {
       }}
     >
       <div className="flex w-full">
-        <div className="w-1/2">
+        <div className="w-1/2 mr-2">
           <label className={`${thisUser.username.msg ? "text-red-600 font-normal" : ""}`}>Username</label>
           <input
             placeholder="Enter your username"
             className={`${thisUser.username.msg ? "border-[1px] border-red-600" : ""}
-            mt-2 bg-gray-50 focus:bg-gray-100 shadow-2xl shadow-blue-500/10 p-3 outline-none w-full mr-2`}
+            mt-2 bg-blue-50 focus:bg-blue-100  p-3 outline-none w-full text-sm`}
             type="text"
             value={thisUser.username.value}
             onChange={(e) => {
@@ -94,7 +94,7 @@ const Login = () => {
           <input
             placeholder="Enter your password"
             className={`${thisUser.password.msg ? "border-[1px] border-red-600" : ""}
-            mt-2 bg-gray-50 focus:bg-gray-100 shadow-2xl shadow-blue-500/10 p-3 outline-none w-full`}
+            mt-2 bg-blue-50 focus:bg-blue-100  p-3 outline-none w-full text-sm`}
             type="password"
             value={thisUser.password.value}
             onChange={(e) => {
@@ -109,7 +109,7 @@ const Login = () => {
         </div>
       </div>
       <div className="flex justify-end mt-4 mb-1">
-        <button className="bg-gray-800 text-white px-6 py-2 hover:bg-black font-normal"
+        <button className="bg-blue-500 text-white px-6 py-2 font-medium outline-none"
         onClick={login}
         >
           Login
