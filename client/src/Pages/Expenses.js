@@ -175,7 +175,11 @@ const Expenses = () => {
           {
         showAdd ?
         <div
-        className="bg-white lg:w-1/2 p-4 shadow-2xl shadow-blue-500/10 border-t-[1px] border-gray-100 mb-6"
+              className="bg-white lg:w-1/2 p-4 shadow-2xl shadow-blue-500/10 border-t-[1px] border-gray-100 mb-6"
+              onKeyDown={(e) => {
+                if (e.key === "Enter")
+                  return addExpense()
+              }}
         >
          <div className="sm:flex gap-3 items-center">
           <div className="sm:w-1/2 mb-4">
