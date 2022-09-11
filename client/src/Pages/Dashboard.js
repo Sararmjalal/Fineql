@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 
 const Dashboard = () => {
@@ -61,56 +61,54 @@ const Dashboard = () => {
 
   const [pickedYear, setPickedYear] = useState(years[years.length - 1])
 
-  const clone = []
   
-  const expenses = data.me.myExpenses
+  const buildChartData = () => {
+    
+    const array = []
+    let obj = {}
+    
+    data.me.myExpenses
     .filter(expense => expense.date.slice(0, 4) == pickedYear)
     .map(expense => {
       months.map(month => {
         if (month.number === expense.date.slice(5, 7))
-          return clone.push({
+          return array.push({
             amount: expense.amount,
             month: month.name,
           })
-      })
-    })
-  
-  // setChartData(clone)
-  
-// setTimeout(() => {
-//   chartData.forEach((item, i, ref) => {
-//     if (ref[i].month === ref[i + 1].month){
-//       ref[i].amount = ref[i + 1].amount
-//       ref.slice(i + 1, 1)
-//     }
-//   })
-// }, 500);
-  
-  const x = new Map(clone)
-
-  console.log(x)
-  
-  let obj = {}
-
-  clone.forEach(item => {
-    // console.log(x.get(item.month))
-    // if (!obj[item.month]) 
-    //   return obj = {
-    //     ...obj, x: item.amount
-    //   }
-
-    // obj = {...obj, amount: obj.amount + item.amount}
-    if (!obj[item.month])
+          array.push(
+            {
+              amount: 0,
+              month: month.name,
+            }
+            )
+          })
+        })
+        
+    array.forEach(item => {
+        if (!obj[item.month])
       return obj[item.month] = item.amount
-    obj[item.month] += item.amount
-  })
+      obj[item.month] += item.amount
+    })
+      
+    const monthes = Object.keys(obj)
+    const amounts = Object.values(obj)
+    const clone = []
 
-  console.log(obj)
-
-  console.log(clone)
-
-  // const highestAmount = expenses.reduce((acc, cur) => (
-  //   cur.amount > acc ? Number(cur.amount) : acc
+    console.log(monthes)
+    console.log(amounts)
+      
+  }
+  
+  console.log(chartData)
+    
+    
+    useEffect(() => {
+      buildChartData()
+    }, [pickedYear])
+    
+    // const highestAmount = expenses.reduce((acc, cur) => (
+      //   cur.amount > acc ? Number(cur.amount) : acc
   // ), 0)
   
 
@@ -118,14 +116,12 @@ const Dashboard = () => {
 
   const [showMenu, setShowMenu] = useState(false)
 
-  console.log(expenses)
-
   return (
     <div className=" text-gray-600">
       <h1 className="text-lg mb-2">Dashboard</h1>
       <p className="font-light mb-6">You can see chart of your expenses here.</p>
       {
-          !expenses[0] ?
+          !data.me.myExpenses[0] ?
             <p className="font-light text-sm">You have no expenses yet.</p>
           :
           <div>
