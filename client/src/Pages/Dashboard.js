@@ -4,12 +4,12 @@ import { useOutletContext } from "react-router-dom";
 const Dashboard = () => {
   
   const { data } = useOutletContext()
-
+  
   const years = [... new Set(data.me.myExpenses.map(expense => (expense.date.slice(0, 4))))].sort()
-
+  
   const months = [{
-      name: "January",
-      number: '01'
+    name: "January",
+    number: '01'
     },
     {
       name: "February",
@@ -59,17 +59,18 @@ const Dashboard = () => {
 
   const [chartData, setChartData] = useState([])
 
-  const [pickedYear, setPickedYear] = useState(years[years.length - 1])
+  const [tagData, setTagData] = useState([])
 
+  const [showMenu, setShowMenu] = useState(false)
+
+  const [pickedYear, setPickedYear] = useState(years[years.length - 1])
   
   const buildChartData = () => {
-    
+   
     const array = []
     let obj = {}
-    
-    data.me.myExpenses
-    .filter(expense => expense.date.slice(0, 4) == pickedYear)
-    .map(expense => {
+
+    data.me.myExpenses.filter(expense => expense.date.slice(0, 4) == pickedYear).forEach(expense => {
       months.map(month => {
         if (month.number === expense.date.slice(5, 7))
           return array.push({
@@ -86,7 +87,7 @@ const Dashboard = () => {
         })
         
     array.forEach(item => {
-        if (!obj[item.month])
+      if (!obj[item.month])
       return obj[item.month] = item.amount
       obj[item.month] += item.amount
     })
@@ -95,26 +96,65 @@ const Dashboard = () => {
     const amounts = Object.values(obj)
     const clone = []
 
-    console.log(monthes)
-    console.log(amounts)
-      
+    monthes.forEach(month => {
+      clone.push({month})
+    })
+
+    amounts.forEach((amount, index) => {
+      clone[index] = {...clone[index], amount}
+    })
+
+    setChartData(clone)
+
+  }    
+
+  const buildTagData = () => {
+
+      const array = []
+      let obj = {}
+
+      data.me.myTags.forEach(tag => {
+        data.me.myExpenses.filter(expense => expense.date.slice(0, 4) == pickedYear).forEach(expense => {
+          if(expense.tags[0]._id === tag._id)
+          return array.push({
+            name: tag.name,
+            amount: expense.amount
+          })
+          array.push({
+            name: tag.name,
+            amount: 0
+          })
+        })
+      })
+
+      array.forEach(item => {
+        if(obj[item.name])
+        return obj[item.name] += item.amount
+        obj[item.name] = item.amount
+      })
+
+    const tags = Object.keys(obj)
+    const amounts = Object.values(obj)
+    const clone = []
+
+    tags.forEach(tag => {
+      clone.push({tag})
+    })
+
+    amounts.forEach((amount, index) => {
+      clone[index] = {...clone[index], amount}
+    })
+
+    setTagData(clone)
   }
-  
-  console.log(chartData)
-    
-    
+   
     useEffect(() => {
       buildChartData()
+      buildTagData()
     }, [pickedYear])
-    
-    // const highestAmount = expenses.reduce((acc, cur) => (
-      //   cur.amount > acc ? Number(cur.amount) : acc
-  // ), 0)
-  
 
-  // const amounts = [highestAmount, highestAmount * 4 / 5, highestAmount * 3 / 5, highestAmount * 2 / 5, highestAmount / 5, 0]
-
-  const [showMenu, setShowMenu] = useState(false)
+    console.log("tagdata", tagData)
+    console.log("chartdata", chartData)
 
   return (
     <div className=" text-gray-600">
