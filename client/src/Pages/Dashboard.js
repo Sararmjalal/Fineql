@@ -1,26 +1,29 @@
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
+import { BarChart, Bar, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+
 
 const Dashboard = () => {
+  console.log("age kar nakoni mamanet ...")
   
-  const { data } = useOutletContext()
+  const { data, refetch } = useOutletContext()
   
   const years = [... new Set(data.me.myExpenses.map(expense => (expense.date.slice(0, 4))))].sort()
   
   const months = [{
-    name: "January",
+    name: "Jan",
     number: '01'
     },
     {
-      name: "February",
+      name: "Feb",
       number: '02'
       },
       {
-        name: "March",
+        name: "Mar",
         number: '03'
       },
       {
-        name: "April",
+        name: "Apr",
         number: '04'
       },
       {
@@ -28,31 +31,31 @@ const Dashboard = () => {
         number: '05'
       },
       {
-        name: "June",
+        name: "Jun",
         number: '06'
       },
       {
-        name: "July",
+        name: "Jul",
         number: '07'
       },
       {
-        name: "August",
+        name: "Aug",
         number: '08'
       },
       {
-        name: "September",
+        name: "Sep",
         number: '09'
       },
       {
-        name: "October",
+        name: "Oct",
         number: '10'
       },
       {
-        name: "November",
+        name: "Nov",
         number: '11'
       },
       {
-        name: "December",
+        name: "Dec",
         number: '12'
       },
   ]
@@ -71,7 +74,7 @@ const Dashboard = () => {
     let obj = {}
 
     data.me.myExpenses.filter(expense => expense.date.slice(0, 4) == pickedYear).forEach(expense => {
-      months.map(month => {
+      months.forEach(month => {
         if (month.number === expense.date.slice(5, 7))
           return array.push({
             amount: expense.amount,
@@ -101,7 +104,7 @@ const Dashboard = () => {
     })
 
     amounts.forEach((amount, index) => {
-      clone[index] = {...clone[index], amount}
+      clone[index] = {...clone[index], Amount: amount}
     })
 
     setChartData(clone)
@@ -142,7 +145,7 @@ const Dashboard = () => {
     })
 
     amounts.forEach((amount, index) => {
-      clone[index] = {...clone[index], amount}
+      clone[index] = {...clone[index], Amount: amount}
     })
 
     setTagData(clone)
@@ -151,6 +154,7 @@ const Dashboard = () => {
     useEffect(() => {
       buildChartData()
       buildTagData()
+      refetch()
     }, [pickedYear])
 
     console.log("tagdata", tagData)
@@ -166,13 +170,13 @@ const Dashboard = () => {
           :
           <div>
             <div className="mb-6 lg:w-1/2">
-              <p className="font-light text-sm mb-6">Your expenses chart based on time</p>
-              <div>
+              <p className="mb-6">Your expenses chart based on time</p>
+              <div className="relative">
                 <div className="flex gap-2 justify-end w-full text-sm mb-6">
-                  <p className="mt-1">Pick a year:</p>
-                  <ul className="flex flex-col cursor-pointer">
+                  <p className="mt-1 mr-[3.7rem]">Pick a year:</p>
+                  <ul className="flex flex-col cursor-pointer absolute z-50">
                   <div
-                    className={`text-gray-600 px-3 py-1 ${showMenu ? "bg-blue-100" : "bg-blue-50"}`}
+                    className={`text-gray-600 px-3 py-1 ${showMenu ? "bg-blue-100" : "bg-blue-50"} relative`}
                     onClick={() => setShowMenu(!showMenu)}
                   >
                     {pickedYear}
@@ -180,7 +184,7 @@ const Dashboard = () => {
                   {
                     showMenu ?
                       years.reverse().map(year => (
-                        <div
+                        <li
                           className="text-gray-600 px-3 py-1 bg-blue-50 hover:bg-blue-100"
                           onClick={() => {
                             setShowMenu(false)
@@ -188,17 +192,35 @@ const Dashboard = () => {
                           }}
                         >
                         {year}
-                      </div>
+                      </li>
                       ))
                       :
                       ""
                   }
                   </ul>
                 </div>
+                <div className="w-full">
+                <LineChart width={800} height={400} data={chartData} fontSize={14}>
+                  <Line type="monotone" dataKey="Amount" stroke="#3b82f6" strokeWidth={2} />
+                  <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip wrapperStyle={{outline: "none"}}/>
+                </LineChart>
+                </div>
               </div>
             </div>
-            <div className="mb-6 lg:w-1/2">
-             <p className="font-light text-sm">Your expenses chart based on tags</p>
+            <div className="mb-24 lg:w-1/2">
+              <p className="mb-8">Your expenses chart based on tags</p>
+              <div>
+              <BarChart width={800} height={400} data={tagData} fontSize={14}>
+                <XAxis dataKey="tag" fontSize={14} />
+                <YAxis />
+                <Tooltip wrapperStyle={{outline: "none"}} fontSize={14} />
+                <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                <Bar dataKey="Amount" fill="#3b82f6" barSize={30} />
+              </BarChart>
+              </div>
             </div>
           </div>
       }     
