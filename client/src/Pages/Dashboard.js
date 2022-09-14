@@ -4,8 +4,7 @@ import { BarChart, Bar, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } 
 
 
 const Dashboard = () => {
-  console.log("age kar nakoni mamanet ...")
-  
+
   const { data, refetch } = useOutletContext()
   
   const years = [... new Set(data.me.myExpenses.map(expense => (expense.date.slice(0, 4))))].sort()
@@ -157,8 +156,6 @@ const Dashboard = () => {
       refetch()
     }, [pickedYear])
 
-    console.log("tagdata", tagData)
-    console.log("chartdata", chartData)
 
   return (
     <div className=" text-gray-600">

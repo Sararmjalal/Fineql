@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 import { gql, useMutation } from '@apollo/client';
 import ReactIconsBi from "react-icons/bi/index"
 import { toast } from "react-toastify";
 import AddExpenseTagsList from "../Components/AddExpenseTagsList";
-import { MapContainer, TileLayer, Marker } from "react-leaflet"
+import { MapContainer, TileLayer } from "react-leaflet"
 import "leaflet/dist/leaflet.css";
 import ExpensesList from "../Components/ExpensesList";
+import ReactMdIcons from "react-icons/md/index"
 
 const ADD_EXPENSE = gql`
 mutation Create_expense($data: ExpenseInfo!) {
@@ -26,12 +27,6 @@ const Expenses = () => {
     amount: {
       value: "",
       msg:""
-    },
-    geo: {
-      value: {
-        lat: "35.73825",
-        lon: "51.50962"
-      }
     },
     tag: {
       value: "",
@@ -58,16 +53,25 @@ const Expenses = () => {
         msg:""
       }
   })
+  const mapRef = useRef(null)
 
   const [AddExpense] = useMutation(ADD_EXPENSE)
 
   const addExpense = async () => {
     const values = Object.values(thisExpense)
+    const keys = Object.keys(thisExpense)
     const checkifEmptyValues = values.some(item => !item.value)
 
-    if (checkifEmptyValues) return values.forEach(item => {
-      if (!item.value) item.msg = "This field cannot be empty!"
-    })
+    if (checkifEmptyValues) {
+      const clone = {}
+      values.forEach(item => {
+        if (!item.value) item.msg = "This field cannot be empty!"
+        keys.forEach(key => {
+          clone[key] = item
+        })
+      })
+      return setThisExpense(clone)
+    }
 
     try {
       await AddExpense({
@@ -75,8 +79,8 @@ const Expenses = () => {
           "data": {
             "amount": parseFloat(thisExpense.amount.value),
             "geo": {
-              "lat": parseFloat(thisExpense.geo.value.lat),
-              "lon": parseFloat(thisExpense.geo.value.lon)
+              "lat": parseFloat(mapRef.current.getCenter().lat),
+              "lon": parseFloat(mapRef.current.getCenter().lng)
             },
             "tags": [thisExpense.tag.value],
             "date": thisExpense.date.value,
@@ -98,13 +102,6 @@ const Expenses = () => {
         amount: {
           value: "",
           msg:""
-        },
-        geo: {
-          value:
-          {
-            lat: "35.73825",
-            lon: "51.50962"
-          }
         },
         tag: {
           value: "",
@@ -352,17 +349,21 @@ const Expenses = () => {
                   <p className=" text-red-600 font-normal mt-1">{thisExpense.Place.msg}</p>
                 </div>
               </div> 
-              <div className="w-full h-72 mb-4">
+              <div className="w-full h-72 mb-4 relative">
                 <MapContainer
-                  center={ [thisExpense.geo.value.lat, thisExpense.geo.value.lon]}
+                  className="outline-none"
+                  ref={mapRef}
+                  center={ ["35.73825", "51.50962"]}
                   zoom={16}
                   scrollWheelZoom={true}
-                  onChange={(e) => console.log("changes", e)}
-                  onClick={(e) => console.log("hello e", e.targets)}
                 >
                   <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <ReactMdIcons.MdLocationPin
+                    className="absolute text-[3rem] text-blue-500 z-[1000]
+                    top-[calc(50%-1.5rem)] left-[calc(50%-1.5rem)]"
                   />
                 </MapContainer>
               </div>

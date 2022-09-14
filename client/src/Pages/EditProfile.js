@@ -32,7 +32,7 @@ const EditProfile = () => {
       const fileReader = new FileReader()
 
       fileReader.onload = function (e) {
-        console.log(e.target)
+
         setThisUser({ ...thisUser, img: e.target.result })
       }
 
