@@ -9,55 +9,20 @@ const Dashboard = () => {
   
   const years = [... new Set(data.me.myExpenses.map(expense => (expense.date.slice(0, 4))))].sort()
   
-  const months = [{
-    name: "Jan",
-    number: '01'
-    },
-    {
-      name: "Feb",
-      number: '02'
-      },
-      {
-        name: "Mar",
-        number: '03'
-      },
-      {
-        name: "Apr",
-        number: '04'
-      },
-      {
-        name: "May",
-        number: '05'
-      },
-      {
-        name: "Jun",
-        number: '06'
-      },
-      {
-        name: "Jul",
-        number: '07'
-      },
-      {
-        name: "Aug",
-        number: '08'
-      },
-      {
-        name: "Sep",
-        number: '09'
-      },
-      {
-        name: "Oct",
-        number: '10'
-      },
-      {
-        name: "Nov",
-        number: '11'
-      },
-      {
-        name: "Dec",
-        number: '12'
-      },
-  ]
+  const months = {
+    "01": "Jan",
+    "02": "Feb",
+    "03": "Mar",
+    "04": "Apr",
+    "05": "May",
+    "06": "Jun",
+    "07": "Jul",
+    "08": "Aug",
+    "09": "Sep",
+    "10": "Oct",
+    "11": "Nov",
+    "12": "Dec",
+  }
 
   const [chartData, setChartData] = useState([])
 
@@ -68,86 +33,56 @@ const Dashboard = () => {
   const [pickedYear, setPickedYear] = useState(years[years.length - 1])
   
   const buildChartData = () => {
-   
-    const array = []
-    let obj = {}
 
-    data.me.myExpenses.filter(expense => expense.date.slice(0, 4) == pickedYear).forEach(expense => {
-      months.forEach(month => {
-        if (month.number === expense.date.slice(5, 7))
-          return array.push({
-            amount: expense.amount,
-            month: month.name,
-          })
-          array.push(
-            {
-              amount: 0,
-              month: month.name,
-            }
-            )
-          })
-        })
-        
-    array.forEach(item => {
-      if (!obj[item.month])
-      return obj[item.month] = item.amount
-      obj[item.month] += item.amount
-    })
-      
-    const monthes = Object.keys(obj)
-    const amounts = Object.values(obj)
-    const clone = []
+    const obj = {
+      Jan: 0,
+      Feb: 0,
+      Mar: 0,
+      Apr: 0,
+      May: 0,
+      Jun: 0,
+      Jul: 0,
+      Aug: 0,
+      Sep: 0,
+      Oct: 0,
+      Nov: 0,
+      Dec: 0,
+    }
 
-    monthes.forEach(month => {
-      clone.push({month})
-    })
+    data.me.myExpenses
+      .filter(expense => expense.date.slice(0, 4) == pickedYear)
+      .forEach(expense => obj[months[expense.date.slice(5, 7)]] += expense.amount);
+    
+    const newData = Object.entries(obj).map(([key, value]) => ({
+      month: key,
+      Amount: value
+    }));
 
-    amounts.forEach((amount, index) => {
-      clone[index] = {...clone[index], Amount: amount}
-    })
-
-    setChartData(clone)
+    setChartData(newData)
 
   }    
 
   const buildTagData = () => {
 
-      const array = []
-      let obj = {}
+    const { myTags, myExpenses } = data.me
 
-      data.me.myTags.forEach(tag => {
-        data.me.myExpenses.filter(expense => expense.date.slice(0, 4) == pickedYear).forEach(expense => {
-          if(expense.tags[0]._id === tag._id)
-          return array.push({
-            name: tag.name,
-            amount: expense.amount
-          })
-          array.push({
-            name: tag.name,
-            amount: 0
-          })
-        })
-      })
+    const obj = {}
 
-      array.forEach(item => {
-        if(obj[item.name])
-        return obj[item.name] += item.amount
-        obj[item.name] = item.amount
-      })
-
-    const tags = Object.keys(obj)
-    const amounts = Object.values(obj)
-    const clone = []
-
-    tags.forEach(tag => {
-      clone.push({tag})
+    myTags.forEach(tag => {
+        obj[tag.name] = 0
     })
+    
+    myExpenses
+      .filter(({ date }) => date.slice(0, 4) == pickedYear)
+      .forEach(({ tags, amount }) => obj[tags[0].name] += amount);
+    
+    const newData = Object.entries(obj).map(([key, value]) => ({
+      tag: key,
+      Amount: value
+    }));
 
-    amounts.forEach((amount, index) => {
-      clone[index] = {...clone[index], Amount: amount}
-    })
+    setTagData(newData)
 
-    setTagData(clone)
   }
    
     useEffect(() => {
