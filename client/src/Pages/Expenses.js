@@ -349,6 +349,7 @@ const Expenses = () => {
                   <p className=" text-red-600 font-normal mt-1">{thisExpense.Place.msg}</p>
                 </div>
               </div> 
+               <p className="text-base my-6 font-medium">Drag to choose a place on map for your expense</p>   
               <div className="w-full h-72 mb-4 relative">
                 <MapContainer
                   className="outline-none"
